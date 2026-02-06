@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>For You ❤️</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: linear-gradient(to bottom, #F4C7D0, #9FAA74); 
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      text-align: center;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .box {
+      margin-top: 15vh;
+      background: #FCEBF1;
+      padding: 30px;
+      border-radius: 20px;
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      z-index: 1000;
+      position: relative;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 15px;
+      background: #C66F80; 
+      color: #ECE3D2;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    button:hover {
+      background: #4A6644;
+    }
+
+    input {
+      padding: 10px;
+      border-radius: 10px;
+      border: 1px solid #aaa;
+      margin-top: 10px;
+      width: 80%;
+    }
+
+    .hidden { display: none; }
+
+    #game {
+      position: relative;
+      width: 100%;
+      height: 80vh;
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 32px;
+      cursor: pointer;
+      animation: float 3s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-25px); }
+      100% { transform: translateY(0); }
+    }
+
+    #finalMessage {
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2000; 
+    }
+  </style>
+
+  
+</head>
+<body>
+    <div id="step1" class="box">
+    <h2 style="color: #4A6644">Are you Millie?</h2>
+    <button onclick="yesMillie()">Yes</button>
+    <button onclick="noMillie()">No</button>
+  </div>
+
+  <div id="step2" class="box hidden">
+    <h2 style="color: #4A6644;">Are you sure?</h2>
+    <button onclick="sureYes()">Yes</button>
+    <button onclick="sureNo()">No</button>
+  </div>
+
+  <div id="step3" class="box hidden">
+    <h2 style="color: #4A6644">Enter the password</h2>
+    <input type="password" id="password" placeholder="Password">
+    <br><br>
+    <button onclick="checkPassword()">Unlock</button>
+    <p id="error" style="color:red;"></p>
+  </div>
+
+  <div id="gameSection" class="hidden">
+    <h1 style="color: green">Catch you catch my matcha?</h1>
+    <p id="counter">Matcha caught: 0</p>
+    <div id="game"></div>
+  </div>
+
+  <div id="finalMessage" class="box hidden">
+    <h2 style="color: green;">Congrats, you caught my matcha!</h2>
+    <p style="color: #C66F80;">And now, Darius Kurozawa is asking you.</p>
+    <h3 style='color: #C66F80;'>Will you be my Valentine, Milana Siobhan Escalera?</h3>
+  </div>
+
+  <script>
+    
+  const step1 = document.getElementById("step1");
+  const step2 = document.getElementById("step2");
+  const step3 = document.getElementById("step3");
+  const gameSection = document.getElementById("gameSection");
+  const counter = document.getElementById("counter");
+  const game = document.getElementById("game");
+  const finalMessage = document.getElementById("finalMessage");
+  const error = document.getElementById("error");
+
+  let heartsCaught = 0;
+  let heartInterval;
+
+  
+  function yesMillie() {
+    step1.classList.add("hidden");
+    step2.classList.remove("hidden");
+  }
+
+  function noMillie() {
+    alert("Who are you?");
+  }
+
+  function sureYes() {
+    step2.classList.add("hidden");
+    step3.classList.remove("hidden");
+  }
+
+  function sureNo() {
+    alert("Take your time");
+  }
+
+  function checkPassword() {
+    const pass = document.getElementById("password").value;
+    const correctPassword = "Yaroy";
+
+    if (pass === correctPassword) {
+      step3.classList.add("hidden");
+      gameSection.classList.remove("hidden");
+      startGame();
+    } else {
+      error.textContent = "Sino ka?";
+    }
+  }
+
+  function startGame() {
+    heartInterval = setInterval(createHeart, 800);
+  }
+
+  function createHeart() {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "🍵";
+
+    heart.style.left = Math.random() * 90 + "%";
+    heart.style.top = Math.random() * 80 + "%";
+
+    heart.onclick = () => {
+      heartsCaught++;
+      counter.textContent = `Hearts caught: ${heartsCaught}`;
+      heart.remove();
+
+      if (heartsCaught >= 10 && finalMessage.classList.contains("hidden")) {
+        finalMessage.classList.remove("hidden");
+        clearInterval(heartInterval); 
+      }
+    };
+
+    game.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 4000);
+  }
+  </script>
+</body>
+</html>
